@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-    </style>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signup</title>
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Create account | Linkly</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
-  <body>
-    <h1>Signup</h1>
-    <form action="/user" method="post">
-      <label>Full Name</label>
-      <input type="text" required name="name" />
-      <label>Email</label>
-      <input type="text" required name="email" />
-      <label>Password</label>
-      <input type="text" required name="password" />
-
-      <button type="submit">Signup</button>
-    </form>
+  <body class="auth-page">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Linkly home">
+        <span class="brand-mark" aria-hidden="true">↗</span>
+        <span>linkly</span>
+      </a>
+      <a class="header-link" href="/login">Sign in <span aria-hidden="true">→</span></a>
+    </header>
+    <main class="auth-main">
+      <section class="panel auth-card">
+        <div class="auth-icon" aria-hidden="true">✦</div>
+        <p class="eyebrow">GET STARTED FOR FREE</p>
+        <h1>Create your account</h1>
+        <p class="auth-copy">Join Linkly and start making your URLs easier to share.</p>
+        <form class="auth-form" action="/user" method="post">
+          <label for="name">Full name</label>
+          <input id="name" type="text" required name="name" placeholder="Your name" autocomplete="name" />
+          <label for="email">Email address</label>
+          <input id="email" type="email" required name="email" placeholder="you@example.com" autocomplete="email" />
+          <label for="password">Password</label>
+          <input id="password" type="password" required name="password" placeholder="Create a password" autocomplete="new-password" />
+          <button class="button button-primary button-full" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+      </section>
+      <p class="auth-footnote">Shorten your links. Make them memorable.</p>
+    </main>
   </body>
 </html>

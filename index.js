@@ -19,6 +19,7 @@ connectToMongoDB(process.env.MONGODB ?? "mongodb://localhost:27017/short-url").t
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

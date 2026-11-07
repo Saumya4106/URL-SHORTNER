@@ -1,50 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-    </style>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page</title>
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Dashboard | Linkly</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <h1>URL Shortener</h1>
-    <% if (locals.id) { %>
-    <p>URL Generated: http://localhost:8001/url/<%= id %></p>
-    <% } %>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Linkly home">
+        <span class="brand-mark" aria-hidden="true">↗</span>
+        <span>linkly</span>
+      </a>
+      <span class="header-label"><span class="status-dot"></span>Your workspace</span>
+    </header>
 
-    <div>
-      <form method="POST" action="/url">
-        <label>Enter Your Original URL</label>
-        <input type="text" name="url" placeholder="https://example.com" />
-        <button type="submit">Generate</button>
-      </form>
-    </div>
-    <div style="margin-top: 30px">
-      <% if (locals.urls) { %>
-      <table>
-        <thead>
-          <th>S. No</th>
-          <th>ShortID</th>
-          <th>Redirect</th>
-          <th>Clicks</th>
-        </thead>
-        <tbody>
-          <% urls.forEach((url, index) => { %>
-          <tr>
-            <td><%= index + 1 %></td>
-            <td><%= url.shortId %></td>
-            <td><%= url.redirectURL %></td>
-            <td><%= url.visitHistory.length %></td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
-      <% } %>
-    </div>
+    <main class="dashboard">
+      <section class="welcome">
+        <p class="eyebrow">YOUR LINK WORKSPACE</p>
+        <h1>Make every link <span>count.</span></h1>
+        <p class="welcome-copy">Create a short, shareable link and keep an eye on how it performs.</p>
+      </section>
+
+      <section class="panel create-panel" id="create">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">GET STARTED</p>
+            <h2>Shorten a link</h2>
+          </div>
+          <span class="step-badge">01</span>
+        </div>
+        <form class="shorten-form" method="POST" action="/url">
+          <label for="url">Paste your long URL</label>
+          <div class="input-row">
+            <span class="input-icon" aria-hidden="true">↗</span>
+            <input id="url" type="url" name="url" placeholder="https://example.com/your-long-link" required />
+            <button class="button button-primary" type="submit">Shorten link <span aria-hidden="true">→</span></button>
+          </div>
+          <p class="field-hint">Use the complete address, including https://</p>
+        </form>
+
+        <% if (locals.id) { %>
+        <div class="result-card" role="status">
+          <div class="result-icon" aria-hidden="true">✓</div>
+          <div class="result-content">
+            <p class="result-title">Your short link is ready</p>
+            <a class="result-link" id="generated-link" href="/url/<%= encodeURIComponent(id) %>">/url/<%= id %></a>
+          </div>
+          <button class="button button-secondary" type="button" id="copy-link">Copy link</button>
+        </div>
+        <% } %>
+      </section>
+
+      <section class="links-section">
+        <div class="section-heading links-heading">
+          <div>
+            <p class="eyebrow">YOUR LIBRARY</p>
+            <h2>Your links <span class="count-badge"><%= locals.urls ? urls.length : 0 %></span></h2>
+          </div>
+        </div>
+
+        <% if (locals.urls && urls.length > 0) { %>
+        <div class="panel table-panel">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">SHORT LINK</th>
+                  <th scope="col">DESTINATION</th>
+                  <th scope="col">CLICKS</th>
+                  <th scope="col"><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% urls.forEach((url) => { %>
+                <tr>
+                  <td><a class="table-short-link" href="/url/<%= encodeURIComponent(url.shortId) %>">/url/<%= url.shortId %></a></td>
+                  <td class="destination-cell" title="<%= url.redirectURL %>"><%= url.redirectURL %></td>
+                  <td><span class="click-count"><%= url.visitHistory.length %></span></td>
+                  <td><a class="analytics-link" href="/url/analytics/<%= encodeURIComponent(url.shortId) %>">Analytics <span aria-hidden="true">↗</span></a></td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <% } else { %>
+        <div class="panel empty-state">
+          <div class="empty-illustration" aria-hidden="true"><span>↗</span></div>
+          <h3>No links yet</h3>
+          <p>Your shortened links will show up here. Create your first one above to get started.</p>
+          <a class="button button-secondary" href="#create">Create your first link</a>
+        </div>
+        <% } %>
+      </section>
+      <footer class="page-footer">Simple links. Better sharing.</footer>
+    </main>
+
+    <script>
+      const copyButton = document.getElementById("copy-link");
+      if (copyButton) {
+        copyButton.addEventListener("click", async () => {
+          const link = document.getElementById("generated-link");
+          try {
+            await navigator.clipboard.writeText(link.href);
+            copyButton.textContent = "Copied!";
+            window.setTimeout(() => {
+              copyButton.textContent = "Copy link";
+            }, 1800);
+          } catch {
+            copyButton.textContent = "Copy unavailable";
+          }
+        });
+      }
+    </script>
   </body>
 </html>

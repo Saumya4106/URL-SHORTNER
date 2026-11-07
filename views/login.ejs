@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-    </style>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Sign in | Linkly</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
-  <body>
-    <h1>Login</h1>
-    <form action="/user/login" method="post">
-      <label>Email</label>
-      <input type="text" required name="email" />
-      <label>Password</label>
-      <input type="text" required name="password" />
-
-      <button type="submit">Login</button>
-    </form>
+  <body class="auth-page">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Linkly home">
+        <span class="brand-mark" aria-hidden="true">↗</span>
+        <span>linkly</span>
+      </a>
+      <a class="header-link" href="/signup">Create an account <span aria-hidden="true">→</span></a>
+    </header>
+    <main class="auth-main">
+      <section class="panel auth-card">
+        <div class="auth-icon" aria-hidden="true">↗</div>
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1>Sign in to Linkly</h1>
+        <p class="auth-copy">Your links and their performance are waiting for you.</p>
+        <% if (locals.error) { %>
+        <p class="form-error" role="alert"><%= error %></p>
+        <% } %>
+        <form class="auth-form" action="/user/login" method="post">
+          <label for="email">Email address</label>
+          <input id="email" type="email" required name="email" placeholder="you@example.com" autocomplete="email" />
+          <label for="password">Password</label>
+          <input id="password" type="password" required name="password" placeholder="Enter your password" autocomplete="current-password" />
+          <button class="button button-primary button-full" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">New to Linkly? <a href="/signup">Create an account</a></p>
+      </section>
+      <p class="auth-footnote">Shorten your links. Make them memorable.</p>
+    </main>
   </body>
 </html>
